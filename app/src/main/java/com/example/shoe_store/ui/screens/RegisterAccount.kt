@@ -49,13 +49,18 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoe_store.R
 import com.example.shoe_store.store.ui.viewmodels.RegisterAccountViewModel
+import com.example.shoe_store.ui.components.DisableButton
+import com.example.shoeshop.ui.components.BackButton
+
+
 
 @Composable
 fun RegisterAccountScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegisterAccountViewModel = viewModel(),
+    viewModel: RegisterAccountViewModel = viewModel (),
     onNavigateToSignIn: () -> Unit = {}
 ) {
     val state = viewModel.uiState
@@ -81,21 +86,21 @@ fun RegisterAccountScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.register),
+                text = stringResource(id = R.string.one),
                 style = MaterialTheme.typography.headlineLarge,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                text = stringResource(id = R.string.details),
+                text = stringResource(id = R.string.one),
                 style = MaterialTheme.typography.bodyMedium,
-                color = colorResource(id = R.color.subTextDark),
+                color = colorResource(id = R.color.SubTextLight),
                 modifier = Modifier.padding(bottom = 40.dp)
             )
 
             Text(
-                text = stringResource(id = R.string.name),
+                text = stringResource(id = R.string.one),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
@@ -113,7 +118,7 @@ fun RegisterAccountScreen(
             )
 
             Text(
-                text = stringResource(id = R.string.email),
+                text = stringResource(id = R.string.one),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
@@ -144,7 +149,7 @@ fun RegisterAccountScreen(
 
 
             Text(
-                text = stringResource(id = R.string.password),
+                text = stringResource(id = R.string.one),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
@@ -171,7 +176,7 @@ fun RegisterAccountScreen(
                                 id = if (state.isPasswordVisible) R.drawable.eye_open else R.drawable.eye_close
                             ),
                             contentDescription = if (state.isPasswordVisible) "Скрыть пароль" else "Показать пароль",
-                            tint = colorResource(id = R.color.subTextDark)
+                            tint = colorResource(id = R.color.SubTextLight)
                         )
                     }
                 }
@@ -198,12 +203,12 @@ fun RegisterAccountScreen(
                             painter = painterResource(id = R.drawable.policy_check),
                             contentDescription = "Выбрано",
                             modifier = Modifier.size(16.dp),
-                            tint = colorResource(id = R.color.accent)
+                            tint = colorResource(id = R.color.Accent)
                         )
                     } else {
                         BorderStroke(
                             width = 2.dp,
-                            color = colorResource(id = R.color.subTextLight)
+                            color = colorResource(id = R.color.SubTextLight)
                         ).let { border ->
                             Box(
                                 modifier = Modifier
@@ -218,9 +223,9 @@ fun RegisterAccountScreen(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text(
-                    text = stringResource(id = R.string.personal_data),
+                    text = stringResource(id = R.string.one),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = colorResource(id = R.color.hint),
+                    color = colorResource(id = R.color.Hint),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -229,7 +234,7 @@ fun RegisterAccountScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         DisableButton(
-            text = stringResource(id = R.string.sign_up),
+            text = stringResource(id = R.string.one),
             onClick = {
                 viewModel.register(onNavigateToSignIn)
             },
@@ -248,8 +253,8 @@ fun RegisterAccountScreen(
             ) {
                 Text(
                     buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = colorResource(id = R.color.hint))) {
-                            append(stringResource(id = R.string.log_in)) // Already Have Account? Log In
+                        withStyle(style = SpanStyle(color = colorResource(id = R.color.Hint))) {
+                            append(stringResource(id = R.string.one)) // Already Have Account? Log In
                         }
                     },
                     fontSize = 14.sp
@@ -265,7 +270,7 @@ fun RegisterAccountScreen(
                 .background(Color.Black.copy(alpha = 0.5f)),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = colorResource(id = R.color.accent))
+            CircularProgressIndicator(color = colorResource(id = R.color.Accent))
         }
     }
 
@@ -282,6 +287,8 @@ fun RegisterAccountScreen(
         )
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
