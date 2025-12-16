@@ -11,37 +11,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.shoe_store.ui.theme.Shoe_storeTheme
+import com.example.shoe_store.store.ui.viewmodels.RegisterAccountUiState
+import com.example.shoe_store.ui.screens.RegisterAccountScreen
+import com.example.shoe_store.ui.theme.ShoeShopTheme
+import com.example.shoe_store.ui.theme.ShoeShopTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Shoe_storeTheme {
+            ShoeShopTheme() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+
+                    RegisterAccountScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        onNavigateToSignIn = {
+                            this@MainActivity.finish()
+                        }
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Shoe_storeTheme {
-        Greeting("Android")
     }
 }
