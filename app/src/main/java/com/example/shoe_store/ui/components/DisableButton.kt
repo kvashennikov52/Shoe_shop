@@ -22,7 +22,7 @@ fun DisableButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     backgroundColor: Color = colorResource(id = R.color.Background),
-    backgroundColordis: Color = colorResource(id = R.color.black),
+    backgroundColordis: Color = colorResource(id = R.color.Accent),
     textColor: Color = Color.White
 ) {
     Button(

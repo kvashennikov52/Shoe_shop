@@ -1,4 +1,4 @@
-package com.example.shoestore.ui.screens
+package com.example.shoe_store.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -27,7 +28,11 @@ val SubTextDark = Color(0xFF666666)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen() {
+fun SignInScreen(
+    onForgotPasswordClick: () -> Unit,
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit
+) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -141,27 +146,32 @@ fun SignInScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // ===== Восстановить =====
-        Text(
-            text = "Восстановить",
-            fontSize = 14.sp,
-            color = SubTextDark,
-            modifier = Modifier
-                .align(Alignment.End)
-        )
+        // ===== Восстановить (сделаем кликабельным) =====
+        TextButton(
+            onClick = onForgotPasswordClick,
+            modifier = Modifier.align(Alignment.End),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = "Восстановить",
+                fontSize = 14.sp,
+                color = SubTextDark
+            )
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         // ===== Кнопка Войти =====
         Button(
-            onClick = {},
+            onClick = onSignInClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Accent
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            enabled = email.isNotBlank() && password.isNotBlank()
         ) {
             Text(
                 text = "Войти",
@@ -171,14 +181,20 @@ fun SignInScreen() {
             )
         }
 
-        Spacer(modifier = Modifier.height(209.dp)) // 209 dp от кнопки
+        Spacer(modifier = Modifier.height(209.dp))
 
-        // ===== Нижний текст =====
-        Text(
-            text = "Вы впервые? Создать",
-            fontSize = 16.sp,
-            color = SubTextDark,
-            textAlign = TextAlign.Center
-        )
+        // ===== Нижний текст (сделаем кликабельным) =====
+        TextButton(
+            onClick = onSignUpClick,
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = "Вы впервые? Создать",
+                fontSize = 16.sp,
+                color = SubTextDark,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.shoestore.data
+package com.example.shoe_store.data
 import com.example.shoe_store.data.service.UserManagementService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

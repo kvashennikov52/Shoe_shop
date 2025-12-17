@@ -1,4 +1,4 @@
-package com.example.shoestore.ui.screens // или com.example.shoestore.ui.components
+package com.example.shoe_store.ui.screens // или com.example.shoestore.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,13 +21,21 @@ import com.example.shoe_store.R
 
 @Composable
 fun EmailSentAlertDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    email: String = "" // Опциональный параметр для отображения email
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text("OK")
+            TextButton(
+                onClick = onDismissRequest,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "OK",
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         title = null,
@@ -58,7 +66,7 @@ fun EmailSentAlertDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = stringResource(R.string.ten2), // "Проверьте Ваш Email"
+                    text = "Проверьте Ваш Email", // Хардкод вместо stringResource(R.string.ten2)
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -66,14 +74,39 @@ fun EmailSentAlertDialog(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // Показываем email, если он передан
+                if (email.isNotBlank()) {
+                    Text(
+                        text = "Мы отправили письмо на:",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = email,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
                 Text(
-                    text = stringResource(R.string.ten3), // "Мы отправили код восстановления пароля на вашу электронную почту."
+                    text = "Мы отправили код восстановления пароля на вашу электронную почту.", // Хардкод вместо stringResource(R.string.ten3)
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
-        }
+        },
+        modifier = Modifier.padding(horizontal = 24.dp)
     )
 }

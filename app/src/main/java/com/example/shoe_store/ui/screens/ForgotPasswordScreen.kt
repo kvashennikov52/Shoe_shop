@@ -1,4 +1,4 @@
-package com.example.shoestore.ui.screens
+package com.example.shoe_store.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -30,9 +30,22 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit = {},
+    onBackToSignIn: () -> Unit,
+    onResetSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
+    // Показываем диалог, если showDialog = true
+    if (showDialog) {
+        EmailSentAlertDialog(
+            onDismissRequest = {
+                showDialog = false
+                onNavigateBack() // Возвращаемся назад после закрытия диалога
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -103,6 +116,10 @@ fun ForgotPasswordScreen(
         Button(
             onClick = {
                 // TODO: Логика отправки email для сброса пароля
+                // Показываем диалог после нажатия кнопки
+                if (email.isNotBlank()) {
+                    showDialog = true
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,7 +127,8 @@ fun ForgotPasswordScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Accent
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            enabled = email.isNotBlank() // Кнопка активна только если email введен
         ) {
             Text(
                 text = "Отправить", // Хардкод вместо stringResource(R.string.twentythree)
