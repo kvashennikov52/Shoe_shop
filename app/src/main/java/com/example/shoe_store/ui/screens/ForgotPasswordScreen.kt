@@ -50,7 +50,7 @@ fun ForgotPasswordScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(getBackground())
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -61,7 +61,7 @@ fun ForgotPasswordScreen(
             text = "Забыл пароль", // Хардкод вместо stringResource(R.string.twentyone)
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Text
+            color = getText()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -70,7 +70,7 @@ fun ForgotPasswordScreen(
         Text(
             text = "Введите Свою Учетную Запись\n Для Сброса", // Хардкод вместо stringResource(R.string.twentytwo)
             fontSize = 16.sp,
-            color = SubTextDark,
+            color = getSubTextDark(),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -81,7 +81,7 @@ fun ForgotPasswordScreen(
         Text(
             text = "Email", // Хардкод вместо stringResource(R.string.nine)
             fontSize = 16.sp,
-            color = Text,
+            color = getText(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -96,16 +96,16 @@ fun ForgotPasswordScreen(
             placeholder = {
                 Text(
                     text = "xyz@gmail.com",
-                    color = SubTextDark
+                    color = getSubTextDark()
                 )
             },
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Block,
-                unfocusedContainerColor = Block,
-                cursorColor = Accent
+                focusedContainerColor = getBlock(),
+                unfocusedContainerColor = getBlock(),
+                cursorColor = getAccent()
             ),
             shape = RoundedCornerShape(16.dp)
         )
@@ -125,7 +125,7 @@ fun ForgotPasswordScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Accent
+                containerColor = getAccent()
             ),
             shape = RoundedCornerShape(16.dp),
             enabled = email.isNotBlank() // Кнопка активна только если email введен

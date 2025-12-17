@@ -19,6 +19,7 @@ class RegisterAccountViewModel : ViewModel() {
     fun updateName(newValue: String) {
         uiState = uiState.copy(name = newValue)
     }
+
     fun updateEmail(newValue: String) {
         val isValid = emailPattern.matcher(newValue).matches() || newValue.isEmpty()
         uiState = uiState.copy(
@@ -39,7 +40,10 @@ class RegisterAccountViewModel : ViewModel() {
         uiState = uiState.copy(isTermsAccepted = !uiState.isTermsAccepted)
     }
 
-    fun register(onSuccess: () -> Unit) {
+    fun register(
+        onNavigateToSignIn: () -> Unit = {},
+        onSignUpSuccess: () -> Unit = {}
+    ) {
         if (uiState.emailError) {
             uiState = uiState.copy(dialogMessage = "Некорректный Email. Проверьте формат: имя@домен.xx")
             return
@@ -53,8 +57,15 @@ class RegisterAccountViewModel : ViewModel() {
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true, dialogMessage = null)
             try {
-                delay(2000)
-                onSuccess()
+                // Имитация запроса на сервер
+                delay(1500)
+
+                println("✅ Регистрация успешна!")
+                println("📧 OTP отправлен на email: ${uiState.email}")
+
+                // Вызываем коллбэк успешной регистрации
+                onSignUpSuccess()
+
             } catch (e: Exception) {
                 uiState = uiState.copy(dialogMessage = "Ошибка регистрации: ${e.message ?: "Нет соединения с Интернетом"}")
             } finally {
@@ -62,10 +73,12 @@ class RegisterAccountViewModel : ViewModel() {
             }
         }
     }
+
     fun dismissDialog() {
         uiState = uiState.copy(dialogMessage = null)
     }
 }
+
 data class RegisterAccountUiState(
     val name: String = "",
     val email: String = "",

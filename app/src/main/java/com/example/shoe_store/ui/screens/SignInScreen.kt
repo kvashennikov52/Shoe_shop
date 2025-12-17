@@ -41,7 +41,7 @@ fun SignInScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(getBackground())
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -53,7 +53,7 @@ fun SignInScreen(
             text = "Привет!",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Text
+            color = getText()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -61,7 +61,7 @@ fun SignInScreen(
         Text(
             text = "Заполните Свои Данные",
             fontSize = 16.sp,
-            color = SubTextDark
+            color = getSubTextDark()
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -70,7 +70,7 @@ fun SignInScreen(
         Text(
             text = "Email",
             fontSize = 16.sp,
-            color = Text,
+            color = getText(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -83,15 +83,15 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             placeholder = {
-                Text("xyz@gmail.com", color = SubTextDark)
+                Text("xyz@gmail.com", color = getSubTextDark())
             },
             singleLine = true,
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Block,
-                unfocusedContainerColor = Block,
+                focusedContainerColor = getBlock(),
+                unfocusedContainerColor = getBlock(),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Accent
+                cursorColor = getAccent()
             ),
             shape = RoundedCornerShape(16.dp)
         )
@@ -102,7 +102,7 @@ fun SignInScreen(
         Text(
             text = "Пароль",
             fontSize = 16.sp,
-            color = Text,
+            color = getText(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -120,7 +120,7 @@ fun SignInScreen(
             else
                 PasswordVisualTransformation(),
             placeholder = {
-                Text("••••••••", color = SubTextDark, fontSize = 20.sp)
+                Text("••••••••", color = getSubTextDark(), fontSize = 20.sp)
             },
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -130,16 +130,16 @@ fun SignInScreen(
                         else
                             Icons.Default.VisibilityOff,
                         contentDescription = null,
-                        tint = SubTextDark
+                        tint = getSubTextDark()
                     )
                 }
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Block,
-                unfocusedContainerColor = Block,
+                focusedContainerColor = getBlock(),
+                unfocusedContainerColor = getBlock(),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Accent
+                cursorColor = getAccent()
             ),
             shape = RoundedCornerShape(16.dp)
         )
@@ -155,7 +155,7 @@ fun SignInScreen(
             Text(
                 text = "Восстановить",
                 fontSize = 14.sp,
-                color = SubTextDark
+                color = getSubTextDark()
             )
         }
 
@@ -168,7 +168,7 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Accent
+                containerColor = getAccent()
             ),
             shape = RoundedCornerShape(16.dp),
             enabled = email.isNotBlank() && password.isNotBlank()
@@ -192,7 +192,7 @@ fun SignInScreen(
             Text(
                 text = "Вы впервые? Создать",
                 fontSize = 16.sp,
-                color = SubTextDark,
+                color = getSubTextDark(),
                 textAlign = TextAlign.Center
             )
         }

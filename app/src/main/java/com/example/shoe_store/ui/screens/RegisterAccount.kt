@@ -21,16 +21,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,9 +53,15 @@ fun RegisterAccountScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterAccountViewModel = viewModel(),
     onNavigateToSignIn: () -> Unit = {},
-    onSignUpClick: () -> Unit
+    onSignUpClick: (email: String) -> Unit // Теперь принимает email
 ) {
     val state = viewModel.uiState
+
+    // Для отладки - логируем состояние формы
+    LaunchedEffect(state.isFormValid) {
+        println("Состояние формы изменилось: isFormValid = ${state.isFormValid}")
+        println("Имя: ${state.name}, Email: ${state.email}, Пароль: ${state.password.isNotBlank()}, Чекбокс: ${state.isTermsAccepted}, EmailError: ${state.emailError}")
+    }
 
     Column(
         modifier = Modifier
@@ -131,20 +130,19 @@ fun RegisterAccountScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                isError = state.emailError
+                isError = state.emailError,
+                supportingText = {
+                    if (state.emailError) {
+                        Text(
+                            text = "Некорректный формат email. (name@domain.xx)",
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
             )
-            if (state.emailError) {
-                Text(
-                    text = "Некорректный формат email. (name@domain.xx)",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, top = 4.dp, bottom = 12.dp)
-                )
-            } else {
-                Spacer(modifier = Modifier.height(20.dp))
-            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = stringResource(id = R.string.eth),
@@ -233,7 +231,21 @@ fun RegisterAccountScreen(
         DisableButton(
             text = stringResource(id = R.string.fiveth),
             onClick = {
-                viewModel.register(onNavigateToSignIn)
+                println("=== КНОПКА РЕГИСТРАЦИИ НАЖАТА ===")
+                println("Состояние формы: isFormValid = ${state.isFormValid}")
+                println("Email для передачи: ${state.email}")
+
+                viewModel.register(
+                    onNavigateToSignIn = {
+                        println("Вызван onNavigateToSignIn")
+                        onNavigateToSignIn()
+                    },
+                    onSignUpSuccess = {
+                        println("Вызван onSignUpSuccess")
+                        // Передаем email на следующий экран
+                        onSignUpClick(state.email)
+                    }
+                )
             },
             enabled = state.isFormValid
         )
@@ -245,13 +257,16 @@ fun RegisterAccountScreen(
             horizontalArrangement = Arrangement.Center
         ) {
             TextButton(
-                onClick = onNavigateToSignIn,
+                onClick = {
+                    println("Текстовая кнопка 'Already Have Account' нажата")
+                    onNavigateToSignIn()
+                },
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(color = colorResource(id = R.color.Hint))) {
-                            append(stringResource(id = R.string.eleventen)) // Already Have Account? Log In
+                            append(stringResource(id = R.string.eleventen))
                         }
                     },
                     fontSize = 14.sp
