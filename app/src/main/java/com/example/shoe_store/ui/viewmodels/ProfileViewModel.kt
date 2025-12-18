@@ -1,4 +1,4 @@
-package com.example.shoestore.ui.viewmodels
+package com.example.shoe_store.ui.viewmodels
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
