@@ -89,6 +89,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 // Material 3
     implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
     // Testing
     testImplementation(libs.junit)
