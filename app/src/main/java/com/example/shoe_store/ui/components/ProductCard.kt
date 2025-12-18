@@ -128,7 +128,7 @@ fun ProductCard(
                     if (isFavorite) {
                         // КОРЗИНА
                         Icon(
-                            painter = painterResource(id = R.drawable.cart_na),
+                            painter = painterResource(id = R.drawable.eye_open),
                             contentDescription = "В корзине",
                             tint = Color.White,
                             modifier = Modifier.size(12.dp)
@@ -136,7 +136,7 @@ fun ProductCard(
                     } else {
                         // ПЛЮС
                         Icon(
-                            painter = painterResource(id = R.drawable.plisik_),
+                            painter = painterResource(id = R.drawable.eye_open),
                             contentDescription = "Добавить",
                             tint = Color.White,
                             modifier = Modifier.size(12.dp)
