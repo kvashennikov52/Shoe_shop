@@ -39,28 +39,28 @@ fun OnboardScreen(
 ) {
     val slides = listOf(
         OnboardingSlide(
-            title = stringResource(id = R.string.one),
+            title = stringResource(id = R.string.welk),
             subtitle = "",
             description = "",
-            buttonText = stringResource(id = R.string.one),
+            buttonText = stringResource(id = R.string.ten),
             backgroundColor = 0xFF48B2E7,
-            imageRes = R.drawable.eye_open
+            imageRes = R.drawable.image_1
         ),
         OnboardingSlide(
             title = stringResource(id = R.string.one),
-            subtitle = stringResource(id = R.string.one),
+            subtitle = stringResource(id = R.string.two),
             description = "",
-            buttonText = stringResource(id = R.string.one),
+            buttonText = stringResource(id = R.string.eleven),
             backgroundColor = 0xFF48B2E7,
-            imageRes = R.drawable.eye_open
+            imageRes = R.drawable.image_2
         ),
         OnboardingSlide(
-            title = stringResource(id = R.string.one),
-            subtitle = stringResource(id = R.string.one),
+            title = stringResource(id = R.string.thre),
+            subtitle = stringResource(id = R.string.four),
             description = "",
-            buttonText = stringResource(id = R.string.one),
+            buttonText = stringResource(id = R.string.eleven),
             backgroundColor = 0xFF48B2E7,
-            imageRes = R.drawable.eye_open
+            imageRes = R.drawable.image_3
         )
     )
 
@@ -106,7 +106,7 @@ fun OnboardScreen(
                 .padding(horizontal = 24.dp, vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // УБРАЛИ ТОЧКИ ПАГИНАЦИИ ЗДЕСЬ
+
 
             OnboardButtun(
                 onClick = {

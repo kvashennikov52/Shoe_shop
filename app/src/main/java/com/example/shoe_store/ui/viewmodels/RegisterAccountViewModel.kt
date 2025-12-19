@@ -13,7 +13,7 @@ class RegisterAccountViewModel : ViewModel() {
     var uiState by mutableStateOf(RegisterAccountUiState())
         private set
 
-    // ИСПРАВЛЕННОЕ регулярное выражение для email
+    //  регулярное выражение для email
     private val emailPattern = Regex("^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.)+[A-Za-z]{2,}\$")
 
     fun updateName(newValue: String) {
@@ -21,7 +21,7 @@ class RegisterAccountViewModel : ViewModel() {
     }
 
     fun updateEmail(newValue: String) {
-        // Используем исправленную логику проверки
+        // Используем логику проверки
         val isValid = isValidEmail(newValue) || newValue.isEmpty()
         uiState = uiState.copy(
             email = newValue, // убрал .lowercase() чтобы пользователь видел ввод как есть
@@ -29,7 +29,7 @@ class RegisterAccountViewModel : ViewModel() {
         )
     }
 
-    // Новая функция для более корректной проверки email
+
     private fun isValidEmail(email: String): Boolean {
         if (email.isEmpty()) return false
 

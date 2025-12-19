@@ -23,13 +23,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,14 +50,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoe_store.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(viewModel: com.example.shoe_store.ui.viewmodels.ProfileViewModel = viewModel()) {
-    // Локальные состояния вместо использования ViewModel напрямую
+fun ProfileScreen(
+    onBackClick: () -> Unit = {}, // Добавлен параметр для навигации назад
+    viewModel: com.example.shoe_store.ui.viewmodels.ProfileViewModel = viewModel()
+) {
+    // Локальные состояния
     var name by remember { mutableStateOf("Иван") }
     var lastName by remember { mutableStateOf("Иванов") }
     var address by remember { mutableStateOf("Москва, ул. Примерная, д. 1") }
@@ -65,219 +76,276 @@ fun ProfileScreen(viewModel: com.example.shoe_store.ui.viewmodels.ProfileViewMod
         bitmap?.let { bitmapPhoto = it }
     }
 
-    // Убираем загрузку из ViewModel
-    // LaunchedEffect(Unit) {
-    //     viewModel.loadProfile()
-    // }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Кнопка назад (только если перешли из HomeScreen)
+                        IconButton(
+                            onClick = onBackClick,
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Назад",
+                                tint = Color.Black
+                            )
+                        }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            "Профиль",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        // Кнопка редактирования
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFF48B2E7))
+                                .clickable { isEditing = !isEditing }
+                                .padding(8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.edit),
+                                contentDescription = "Редактировать",
+                                tint = Color.White,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFF7F7F9),
+                    titleContentColor = Color.Black
+                ),
+                modifier = Modifier.height(60.dp)
+            )
+        }
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .padding(paddingValues)
         ) {
-            // ========== ЗАГОЛОВОК ==========
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp)
             ) {
-                Text(
-                    "Профиль",
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.weight(1f)
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
+                // ========== АВАТАР ==========
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(120.dp)
+                        .align(Alignment.CenterHorizontally)
                         .clip(CircleShape)
-                        .background(Color(0xFF48B2E7))
-                        .clickable { isEditing = !isEditing }
-                        .padding(8.dp),
-                    contentAlignment = Alignment.Center
+                        .background(Color(0xFFF0F0F0))
+                        .clickable { cameraLauncher.launch(null) }
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.edit),
-                        contentDescription = "Редактировать",
-                        tint = Color.White,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // ========== АВАТАР ==========
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .clip(CircleShape)
-                    .background(Color(0xFFF0F0F0))
-                    .clickable { cameraLauncher.launch(null) }
-            ) {
-                if (bitmapPhoto != null) {
-                    Image(
-                        bitmap = bitmapPhoto!!.asImageBitmap(),
-                        contentDescription = "Фото профиля",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Icon(
-                        painterResource(id = R.drawable.profile),
-                        contentDescription = "Иконка профиля",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .align(Alignment.Center),
-                        tint = Color.Gray
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // ========== ИМЯ И ФАМИЛИЯ ==========
-            Text(
-                text = "$name $lastName",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // ========== ШТРИХ-КОД ==========
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.White)
-                    .border(
-                        width = 1.dp,
-                        color = Color(0xFFE5E5E5),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .offset(x = (-10).dp)
-                ) {
-                    Text(
-                        text = "Открыть",
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
-                        color = Color.Gray,
-                        modifier = Modifier
-                            .rotate(-90f)
-                            .width(50.dp)
-                            .height(20.dp)
-                    )
-                }
-
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .width(300.dp)
-                            .height(60.dp)
-                            .background(Color(0xFFF8F8F8), RoundedCornerShape(8.dp))
-                    ) {
+                    if (bitmapPhoto != null) {
                         Image(
-                            painter = painterResource(id = R.drawable.str1),
-                            contentDescription = "Штрих-код",
+                            bitmap = bitmapPhoto!!.asImageBitmap(),
+                            contentDescription = "Фото профиля",
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Icon(
+                            painterResource(id = R.drawable.profile),
+                            contentDescription = "Иконка профиля",
+                            modifier = Modifier
+                                .size(60.dp)
+                                .align(Alignment.Center),
+                            tint = Color.Gray
                         )
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            // ========== ПОЛЯ РЕДАКТИРОВАНИЯ ==========
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                EditableField(
-                    label = "Имя",
-                    value = name,
-                    isEditable = isEditing,
-                    onValueChange = { name = it }
+                // ========== ИМЯ И ФАМИЛИЯ ==========
+                Text(
+                    text = "$name $lastName",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
-                EditableField(
-                    label = "Фамилия",
-                    value = lastName,
-                    isEditable = isEditing,
-                    onValueChange = { lastName = it }
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                EditableField(
-                    label = "Адрес",
-                    value = address,
-                    isEditable = isEditing,
-                    onValueChange = { address = it }
-                )
+                // ========== ШТРИХ-КОД ==========
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White)
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFFE5E5E5),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .offset(x = (-10).dp)
+                    ) {
+                        Text(
+                            text = "Открыть",
+                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
+                            color = Color.Gray,
+                            modifier = Modifier
+                                .rotate(-90f)
+                                .width(50.dp)
+                                .height(20.dp)
+                        )
+                    }
 
-                EditableField(
-                    label = "Телефон",
-                    value = phone,
-                    isEditable = isEditing,
-                    onValueChange = { phone = it }
-                )
-            }
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(300.dp)
+                                .height(60.dp)
+                                .background(Color(0xFFF8F8F8), RoundedCornerShape(8.dp))
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.str1),
+                                contentDescription = "Штрих-код",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+                    }
+                }
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            // ========== КНОПКИ ==========
-            if (isEditing) {
+                // ========== ПОЛЯ РЕДАКТИРОВАНИЯ ==========
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    EditableField(
+                        label = "Имя",
+                        value = name,
+                        isEditable = isEditing,
+                        onValueChange = { name = it }
+                    )
+
+                    EditableField(
+                        label = "Фамилия",
+                        value = lastName,
+                        isEditable = isEditing,
+                        onValueChange = { lastName = it }
+                    )
+
+                    EditableField(
+                        label = "Адрес",
+                        value = address,
+                        isEditable = isEditing,
+                        onValueChange = { address = it }
+                    )
+
+                    EditableField(
+                        label = "Телефон",
+                        value = phone,
+                        isEditable = isEditing,
+                        onValueChange = { phone = it }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // ========== КНОПКИ ==========
+                if (isEditing) {
+                    Button(
+                        onClick = {
+                            // Сохраняем изменения
+                            isEditing = false
+                            // Здесь можно вызвать метод ViewModel для сохранения
+                            // viewModel.saveProfile(name, lastName, address, phone)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2196F3)
+                        )
+                    ) {
+                        Text(
+                            "Сохранить изменения",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = {
+                            isEditing = false
+                            // Если нужно сбросить изменения к исходным значениям
+                            // можно добавить сброс значений здесь
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE0E0E0)
+                        )
+                    ) {
+                        Text(
+                            "Отмена",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.Black
+                        )
+                    }
+                }
+
+                // ========== КНОПКА ВЫХОДА ==========
+                Spacer(modifier = Modifier.height(32.dp))
+
                 Button(
                     onClick = {
-                        // Вместо вызова ViewModel просто выключаем редактирование
-                        isEditing = false
+                        // Обработка выхода из аккаунта
+                        // viewModel.logout()
+                        // После выхода можно вернуться на экран входа
+                        // Это должно обрабатываться в навигации
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF2196F3)
+                        containerColor = Color(0xFFF44336)
                     )
                 ) {
                     Text(
-                        "Сохранить изменения",
+                        "Выйти из аккаунта",
                         style = MaterialTheme.typography.labelLarge,
                         color = Color.White
                     )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = { isEditing = false },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE0E0E0)
-                    )
-                ) {
-                    Text(
-                        "Отмена",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.Black
-                    )
-                }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -323,4 +391,12 @@ fun EditableField(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ProfileScreenPreview() {
+    ProfileScreen(
+        onBackClick = {}
+    )
 }

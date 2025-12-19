@@ -135,7 +135,7 @@ class ForgotPasswordViewModel : ViewModel() {
     }
 }
 
-// ОДИН sealed class вместо двух
+// sealed class
 sealed class ForgotPasswordState {
     object Idle : ForgotPasswordState()
     object Loading : ForgotPasswordState()
@@ -143,12 +143,3 @@ sealed class ForgotPasswordState {
     data class Error(val message: String) : ForgotPasswordState()
 }
 
-// УДАЛИТЕ этот класс (ForgottenPasswordState) или переименуйте его, если нужен отдельно
-/*
-sealed class ForgottenPasswordState {
-    object Idle : ForgottenPasswordState()
-    object Loading : ForgottenPasswordState()
-    object Success : ForgottenPasswordState()
-    data class Error(val message: String) : ForgottenPasswordState()
-}
-*/

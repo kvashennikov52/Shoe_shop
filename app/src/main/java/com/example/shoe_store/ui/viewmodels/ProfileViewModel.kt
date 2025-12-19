@@ -23,7 +23,7 @@ sealed class ProfileUiState {
 class ProfileViewModel : ViewModel() {
     private val TAG = "ProfileViewModel"
 
-    // API ключ для домена fwjozcsirpzcptegqkbo
+
     private val API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3am96Y3NpcnB6Y3B0ZWdxa2JvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNzkyMTAsImV4cCI6MjA4MTY1NTIxMH0.Bb2GIa8OnZFIL6J8TJdWSgq0BKsM4lx0Ar-C-WquTOA"
     private val AUTH_TOKEN = "Bearer $API_KEY"
 
@@ -64,7 +64,7 @@ class ProfileViewModel : ViewModel() {
 
                 Log.d(TAG, "Загрузка профиля для user_id: $userId")
 
-                // Вызов API с правильными параметрами
+
                 val response = RetrofitClient.apiService.getUserProfile(
                     apiKey = API_KEY,
                     token = AUTH_TOKEN,
@@ -125,7 +125,7 @@ class ProfileViewModel : ViewModel() {
                     phone = phone
                 )
 
-                // Правильный вызов API - все параметры по именам
+                // Правильный вызов API
                 val response = RetrofitClient.apiService.updateProfile(
                     apiKey = API_KEY,
                     token = AUTH_TOKEN,
@@ -159,22 +159,10 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    // ========== ПОЛУЧЕНИЕ USER_ID (ВРЕМЕННОЕ РЕШЕНИЕ) ==========
+    // ========== ПОЛУЧЕНИЕ USER_ID  ==========
     private fun getCurrentUserId(): String? {
         // TODO: Реализуйте получение ID из вашей системы авторизации
 
-        // Вариант 1: Если используете Firebase
-        // return Firebase.auth.currentUser?.uid
-
-        // Вариант 2: Если используете Supabase Auth
-        // return supabase.auth.currentUser?.id
-
-        // Вариант 3: Хранить в SharedPreferences после входа
-        // val prefs = getSharedPreferences("auth", Context.MODE_PRIVATE)
-        // return prefs.getString("user_id", null)
-
-        // ВРЕМЕННО: используем тестовый ID (замените на реальный)
-        // Пока что используем тот ID, который создали в Supabase вручную
         return "89af550a-ddc0-4314-9f78-b6aef9f65778"
     }
 

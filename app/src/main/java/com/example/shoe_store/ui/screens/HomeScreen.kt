@@ -1,4 +1,5 @@
 package com.example.shoe_store.ui.screens
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,11 +40,13 @@ fun HomeScreen(
     onProductClick: (Product) -> Unit,
     onCartClick: () -> Unit,
     onSearchClick: () -> Unit,
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    onCategoryClick: (String) -> Unit = {}
 ) {
     var selected by rememberSaveable { mutableIntStateOf(0) }
-
     var selectedCategory by remember { mutableStateOf("All") }
+
+    val searchText by remember { mutableStateOf("") }
 
     val categories = listOf(
         Category("All", isSelected = true),
@@ -114,26 +117,31 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row {
-                        IconButton(onClick = { selected = 0 }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.home),
-                                contentDescription = "Home",
-                                tint = if (selected == 0) MaterialTheme.colorScheme.primary else Color.Black
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        IconButton(onClick = { selected = 1 }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.favorite),
-                                contentDescription = "Favorites",
-                                tint = if (selected == 1) MaterialTheme.colorScheme.primary else Color.Black
-                            )
-                        }
+                    // Home Button
+                    IconButton(
+                        onClick = { selected = 0 },
+                        enabled = selected != 0
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.home),
+                            contentDescription = "Home",
+                            tint = if (selected == 0) MaterialTheme.colorScheme.primary else Color.Black
+                        )
                     }
 
+                    // Favorites Button
+                    IconButton(
+                        onClick = { selected = 1 },
+                        enabled = selected != 1
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.favorite),
+                            contentDescription = "Favorites",
+                            tint = if (selected == 1) MaterialTheme.colorScheme.primary else Color.Black
+                        )
+                    }
+
+                    // Cart Button (Center)
                     Box(
                         modifier = Modifier
                             .offset(y = (-20).dp)
@@ -142,7 +150,7 @@ fun HomeScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         FloatingActionButton(
-                            onClick = { onCartClick() },
+                            onClick = onCartClick,
                             modifier = Modifier.size(56.dp),
                             containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -156,24 +164,28 @@ fun HomeScreen(
                         }
                     }
 
-                    Row {
-                        IconButton(onClick = { selected = 2 }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.orders),
-                                contentDescription = "Notification",
-                                tint = if (selected == 2) MaterialTheme.colorScheme.primary else Color.Black
-                            )
-                        }
+                    // Orders Button
+                    IconButton(
+                        onClick = { selected = 2 },
+                        enabled = selected != 2
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.orders),
+                            contentDescription = "Orders",
+                            tint = if (selected == 2) MaterialTheme.colorScheme.primary else Color.Black
+                        )
+                    }
 
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        IconButton(onClick = { selected = 3 }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.profile),
-                                contentDescription = "Profile",
-                                tint = if (selected == 3) MaterialTheme.colorScheme.primary else Color.Black
-                            )
-                        }
+                    // Profile Button
+                    IconButton(
+                        onClick = { selected = 3 },
+                        enabled = selected != 3
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.profile),
+                            contentDescription = "Profile",
+                            tint = if (selected == 3) MaterialTheme.colorScheme.primary else Color.Black
+                        )
                     }
                 }
             }
@@ -183,141 +195,154 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .background(Color(0xFFF7F7F9)) // Здесь изменен фон на #F7F7F9
+                .background(Color(0xFFF7F7F9))
         ) {
-            if (selected == 0) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.one),
-                        style = AppTypography.headingRegular32,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp),
-                        textAlign = TextAlign.Center
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+            when (selected) {
+                0 -> {
+                    // Home Tab Content
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(24.dp),
+                        contentPadding = PaddingValues(16.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(48.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color.White)
-                        ) {
-                            OutlinedTextField(
-                                value = "",
-                                onValueChange = {},
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(48.dp),
-                                placeholder = {
-                                    Text(
-                                        text = stringResource(R.string.one),
-                                        style = AppTypography.bodyRegular14
-                                    )
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = "Search",
-                                        tint = Color.Gray
-                                    )
-                                },
-                                shape = RoundedCornerShape(12.dp),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = Color.Gray,
-                                    unfocusedBorderColor = Color.LightGray,
-                                    focusedContainerColor = Color.White,
-                                    unfocusedContainerColor = Color.White
+                        item {
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                // Welcome Text
+                                Text(
+                                    text = "Welcome!",
+                                    style = AppTypography.headingRegular32,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 12.dp),
+                                    textAlign = TextAlign.Center
                                 )
+
+                                // Search and Settings Row
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    // Search Field
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .height(48.dp)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(Color.White)
+                                    ) {
+                                        OutlinedTextField(
+                                            value = searchText,
+                                            onValueChange = { },
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(48.dp),
+                                            placeholder = {
+                                                Text(
+                                                    text = "Search for shoes...",
+                                                    style = AppTypography.bodyRegular14
+                                                )
+                                            },
+                                            leadingIcon = {
+                                                Icon(
+                                                    imageVector = Icons.Default.Search,
+                                                    contentDescription = "Search",
+                                                    tint = Color.Gray
+                                                )
+                                            },
+                                            shape = RoundedCornerShape(12.dp),
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                focusedBorderColor = Color.Gray,
+                                                unfocusedBorderColor = Color.LightGray,
+                                                focusedContainerColor = Color.White,
+                                                unfocusedContainerColor = Color.White
+                                            )
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.width(12.dp))
+
+                                    // Settings Button
+                                    Box(
+                                        modifier = Modifier
+                                            .size(48.dp)
+                                            .clip(CircleShape)
+                                            .background(MaterialTheme.colorScheme.primary)
+                                            .clickable { onSettingsClick() },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.sliders),
+                                            contentDescription = "Settings",
+                                            tint = Color.White,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            CategorySection(
+                                categories = categories,
+                                selectedCategory = selectedCategory,
+                                onCategorySelected = { category ->
+                                    selectedCategory = category
+                                    if (category != "All") {
+                                        onCategoryClick(category)
+                                    }
+                                }
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.primary)
-                                .clickable { onSettingsClick() },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.sliders),
-                                contentDescription = "Settings",
-                                tint = Color.White,
-                                modifier = Modifier.size(24.dp)
+                        item {
+                            PopularSection(
+                                products = popularProducts,
+                                onProductClick = onProductClick,
+                                onFavoriteClick = { product ->
+                                    // Handle favorite click
+                                }
                             )
+                        }
+
+                        item {
+                            PromotionsSection()
                         }
                     }
                 }
-            }
-
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                when (selected) {
-                    0 -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(24.dp),
-                            contentPadding = PaddingValues(16.dp)
-                        ) {
-                            item {
-                                CategorySection(
-                                    categories = categories,
-                                    selectedCategory = selectedCategory,
-                                    onCategorySelected = { category ->
-                                        selectedCategory = category
-                                    }
-                                )
-                            }
-
-                            item {
-                                PopularSection(
-                                    products = popularProducts,
-                                    onProductClick = onProductClick,
-                                    onFavoriteClick = { product -> }
-                                )
-                            }
-
-                            item {
-                                PromotionsSection()
-                            }
+                1 -> {
+                    // Favorites Tab
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Favorites Screen",
+                            style = AppTypography.headingRegular32
+                        )
+                    }
+                }
+                2 -> {
+                    // Orders Tab
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Orders Screen",
+                            style = AppTypography.headingRegular32
+                        )
+                    }
+                }
+                3 -> {
+                    // Profile Tab
+                    ProfileScreen(
+                        onBackClick = {
+                            // This will be handled by navigation
+                            selected = 0
                         }
-                    }
-                    1 -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.one),
-                                style = AppTypography.headingRegular32
-                            )
-                        }
-                    }
-                    2 -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.one),
-                                style = AppTypography.headingRegular32
-                            )
-                        }
-                    }
-                    3 -> {
-                        ProfileScreen()
-                    }
+                    )
                 }
             }
         }
@@ -332,7 +357,7 @@ private fun CategorySection(
 ) {
     Column {
         Text(
-            text = stringResource(id = R.string.one),
+            text = "Categories",
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -365,19 +390,19 @@ private fun CategoryChip(
             .width(108.dp)
             .height(40.dp)
             .shadow(
-                elevation = 2.dp, // Небольшая тень для контраста
+                elevation = 2.dp,
                 shape = RoundedCornerShape(16.dp),
                 clip = true
             )
             .clip(RoundedCornerShape(16.dp))
             .background(
                 if (isSelected) MaterialTheme.colorScheme.primary
-                else Color.White // Белый фон для невыбранных чипсов
+                else Color.White
             )
             .border(
                 width = if (isSelected) 0.dp else 1.dp,
                 color = if (isSelected) Color.Transparent
-                else Color(0xFFE0E0E0), // Светло-серая обводка
+                else Color(0xFFE0E0E0),
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick() },
@@ -408,14 +433,14 @@ private fun PopularSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.one),
+                text = "Popular Shoes",
                 style = AppTypography.bodyMedium16.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
                 )
             )
             Text(
-                text = stringResource(R.string.one),
+                text = "See all",
                 style = AppTypography.bodyRegular12.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp
@@ -445,7 +470,7 @@ private fun PopularSection(
 private fun PromotionsSection() {
     Column {
         Text(
-            text = stringResource(R.string.one),
+            text = "Promotions",
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -466,14 +491,13 @@ private fun PromotionsSection() {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.sale),
-                contentDescription = "Sale",
+                contentDescription = "Sale Promotion",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
             )
         }
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -482,6 +506,7 @@ fun HomeScreenPreview() {
         onProductClick = {},
         onCartClick = {},
         onSearchClick = {},
-        onSettingsClick = {}
+        onSettingsClick = {},
+        onCategoryClick = {}
     )
 }

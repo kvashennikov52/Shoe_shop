@@ -146,7 +146,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // ===== Восстановить (сделаем кликабельным) =====
+        // ===== Восстановить =====
         TextButton(
             onClick = onForgotPasswordClick,
             modifier = Modifier.align(Alignment.End),
@@ -183,7 +183,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(209.dp))
 
-        // ===== Нижний текст (сделаем кликабельным) =====
+        // ===== Нижний текст  =====
         TextButton(
             onClick = onSignUpClick,
             modifier = Modifier.fillMaxWidth(),

@@ -56,9 +56,9 @@ fun ForgotPasswordScreen(
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Заголовок - ХАРДКОД как в RegisterAccountScreen
+
         Text(
-            text = "Забыл пароль", // Хардкод вместо stringResource(R.string.twentyone)
+            text = "Забыл пароль",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = getText()
@@ -66,9 +66,9 @@ fun ForgotPasswordScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Подзаголовок - ХАРДКОД
+        // Подзаголовок
         Text(
-            text = "Введите Свою Учетную Запись\n Для Сброса", // Хардкод вместо stringResource(R.string.twentytwo)
+            text = "Введите Свою Учетную Запись\n Для Сброса",
             fontSize = 16.sp,
             color = getSubTextDark(),
             textAlign = TextAlign.Center,
@@ -131,7 +131,7 @@ fun ForgotPasswordScreen(
             enabled = email.isNotBlank() // Кнопка активна только если email введен
         ) {
             Text(
-                text = "Отправить", // Хардкод вместо stringResource(R.string.twentythree)
+                text = "Отправить", // Хардкод
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
