@@ -1,6 +1,5 @@
 package com.example.shoe_store.ui.screens
-import androidx.compose.ui.draw.rotate
-import androidx.compose.foundation.layout.offset
+
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,22 +23,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -47,21 +48,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoe_store.R
-import com.example.shoe_store.ui.viewmodels.ProfileViewModel
-import com.example.shoe_store.ui.viewmodels.ProfileUiState
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
-    val uiState = viewModel.uiState
+fun ProfileScreen(viewModel: com.example.shoe_store.ui.viewmodels.ProfileViewModel = viewModel()) {
+    // Локальные состояния вместо использования ViewModel напрямую
+    var name by remember { mutableStateOf("Иван") }
+    var lastName by remember { mutableStateOf("Иванов") }
+    var address by remember { mutableStateOf("Москва, ул. Примерная, д. 1") }
+    var phone by remember { mutableStateOf("+7 (999) 123-45-67") }
+    var isEditing by remember { mutableStateOf(false) }
+    var bitmapPhoto by remember { mutableStateOf<Bitmap?>(null) }
 
-    // Лаунчер для камеры
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap: Bitmap? ->
-        bitmap?.let { viewModel.onPhotoCaptured(it) }
+        bitmap?.let { bitmapPhoto = it }
     }
 
-    LaunchedEffect(Unit) { viewModel.loadProfile() }
+    // Убираем загрузку из ViewModel
+    // LaunchedEffect(Unit) {
+    //     viewModel.loadProfile()
+    // }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -70,7 +77,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            // Заголовок
+            // ========== ЗАГОЛОВОК ==========
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -81,27 +88,27 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     modifier = Modifier.weight(1f)
                 )
 
-                // Кнопка редактирования с синим кружком
                 Box(
                     modifier = Modifier
-                        .size(30.dp) // Размер кружка
-                        .clip(CircleShape) // Делаем круглую форму
-                        .background(Color(0xFF48B2E7)) // Цвет фона #F7F7F9
-                        .clickable { viewModel.isEditing = !viewModel.isEditing }
-                        .padding(8.dp), // Внутренние отступы для иконки
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF48B2E7))
+                        .clickable { isEditing = !isEditing }
+                        .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.edit),
                         contentDescription = "Редактировать",
-                        tint = Color.White // Черный цвет иконки
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Аватар
+            // ========== АВАТАР ==========
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -110,9 +117,9 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     .background(Color(0xFFF0F0F0))
                     .clickable { cameraLauncher.launch(null) }
             ) {
-                if (viewModel.bitmapPhoto != null) {
+                if (bitmapPhoto != null) {
                     Image(
-                        bitmap = viewModel.bitmapPhoto!!.asImageBitmap(),
+                        bitmap = bitmapPhoto!!.asImageBitmap(),
                         contentDescription = "Фото профиля",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
@@ -123,26 +130,28 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                         contentDescription = "Иконка профиля",
                         modifier = Modifier
                             .size(60.dp)
-                            .align(Alignment.Center)
+                            .align(Alignment.Center),
+                        tint = Color.Gray
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Имя пользователя
+            // ========== ИМЯ И ФАМИЛИЯ ==========
             Text(
-                text = "${viewModel.name} ${viewModel.lastName}",
+                text = "$name $lastName",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // ========== ШТРИХ-КОД ==========
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(65.dp)
+                    .height(80.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color.White)
                     .border(
@@ -151,24 +160,22 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                         shape = RoundedCornerShape(16.dp)
                     )
             ) {
-                // Надпись "Открыть" вертикально слева
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .offset(x = (-10).dp) // Сдвигаем немного влево для лучшего позиционирования
+                        .offset(x = (-10).dp)
                 ) {
                     Text(
                         text = "Открыть",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
                         color = Color.Gray,
                         modifier = Modifier
-                            .rotate(-90f) // Поворачиваем текст на -90 градусов (вертикально)
+                            .rotate(-90f)
                             .width(50.dp)
                             .height(20.dp)
                     )
                 }
 
-                // Штрих-код по центру
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -177,11 +184,11 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     Box(
                         modifier = Modifier
                             .width(300.dp)
-                            .height(65.dp)
+                            .height(60.dp)
                             .background(Color(0xFFF8F8F8), RoundedCornerShape(8.dp))
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.eye_open),
+                            painter = painterResource(id = R.drawable.str1),
                             contentDescription = "Штрих-код",
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Fit
@@ -192,23 +199,49 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Поля для редактирования
+            // ========== ПОЛЯ РЕДАКТИРОВАНИЯ ==========
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                EditableField("Имя", viewModel.name, viewModel.isEditing) { viewModel.name = it }
-                EditableField("Фамилия", viewModel.lastName, viewModel.isEditing) { viewModel.lastName = it }
-                EditableField("Адрес", viewModel.address, viewModel.isEditing) { viewModel.address = it }
-                EditableField("Телефон", viewModel.phone, viewModel.isEditing) { viewModel.phone = it }
+                EditableField(
+                    label = "Имя",
+                    value = name,
+                    isEditable = isEditing,
+                    onValueChange = { name = it }
+                )
+
+                EditableField(
+                    label = "Фамилия",
+                    value = lastName,
+                    isEditable = isEditing,
+                    onValueChange = { lastName = it }
+                )
+
+                EditableField(
+                    label = "Адрес",
+                    value = address,
+                    isEditable = isEditing,
+                    onValueChange = { address = it }
+                )
+
+                EditableField(
+                    label = "Телефон",
+                    value = phone,
+                    isEditable = isEditing,
+                    onValueChange = { phone = it }
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Кнопка сохранения
-            if (viewModel.isEditing) {
+            // ========== КНОПКИ ==========
+            if (isEditing) {
                 Button(
-                    onClick = { viewModel.saveProfile() },
+                    onClick = {
+                        // Вместо вызова ViewModel просто выключаем редактирование
+                        isEditing = false
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -219,51 +252,60 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                 ) {
                     Text(
                         "Сохранить изменения",
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { isEditing = false },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFE0E0E0)
+                    )
+                ) {
+                    Text(
+                        "Отмена",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color.Black
                     )
                 }
             }
-        }
 
-        // Состояние загрузки
-        if (uiState is ProfileUiState.Loading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(color = Color.White)
-            }
-        }
-
-        // Состояние ошибки
-        if (uiState is ProfileUiState.Error) {
-            AlertDialog(
-                onDismissRequest = { viewModel.dismissError() },
-                confirmButton = {
-                    TextButton(onClick = { viewModel.dismissError() }) {
-                        Text("OK")
-                    }
-                },
-                title = { Text("Ошибка") },
-                text = { Text(uiState.message) }
-            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditableField(label: String, value: String, isEditable: Boolean, onValueChange: (String) -> Unit) {
-    Column(modifier = Modifier.padding(top = 16.dp)) {
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+fun EditableField(
+    label: String,
+    value: String,
+    isEditable: Boolean,
+    onValueChange: (String) -> Unit
+) {
+    Column(modifier = Modifier.padding(top = 8.dp)) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = Color.Gray,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
         if (isEditable) {
             OutlinedTextField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                placeholder = { Text(text = "Введите $label") }
             )
         } else {
             Box(
@@ -274,7 +316,10 @@ fun EditableField(label: String, value: String, isEditable: Boolean, onValueChan
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Text(text = value)
+                Text(
+                    text = value,
+                    color = Color.Black
+                )
             }
         }
     }

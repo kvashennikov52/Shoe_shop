@@ -7,24 +7,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("rest/v1/profiles?select=*")
+    // GET запрос - фильтр user_id передается как параметр
+    @GET("rest/v1/profiles")
     suspend fun getUserProfile(
         @Header("apikey") apiKey: String,
-        @Header("Authorization") token: String
-    ): List<UserProfile>
+        @Header("Authorization") token: String,
+        @Query("user_id") userIdFilter: String
+    ): Response<List<UserProfile>>
 
-    // Добавили query-параметр id для фильтрации, чтобы не было ошибки 400
+    // PATCH запрос - фильтр user_id в query параметрах
     @PATCH("rest/v1/profiles")
     suspend fun updateProfile(
         @Header("apikey") apiKey: String,
         @Header("Authorization") token: String,
-        @Query("user_id") userIdFilter: String, // Фильтр: eq.твой_uuid
+        @Query("user_id") userIdFilter: String,
+        @Header("Prefer") prefer: String = "return=representation",
         @Body profile: UserProfile
-    ): Response<Unit>
+    ): Response<List<UserProfile>>
 }
 
 object RetrofitClient {
-    private const val BASE_URL = "https://ityekgxdzzcxaqnltahl.supabase.co"
+    private const val BASE_URL = "https://fwjozcsirpzcptegqkbo.supabase.co"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

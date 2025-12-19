@@ -7,25 +7,66 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.regex.Pattern
 
 class RegisterAccountViewModel : ViewModel() {
 
     var uiState by mutableStateOf(RegisterAccountUiState())
         private set
 
-    private val emailPattern = Pattern.compile("^[a-z0-9]+@([a-z0-9]+\\.[a-z]{2,})$")
+    // ИСПРАВЛЕННОЕ регулярное выражение для email
+    private val emailPattern = Regex("^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.)+[A-Za-z]{2,}\$")
 
     fun updateName(newValue: String) {
         uiState = uiState.copy(name = newValue)
     }
 
     fun updateEmail(newValue: String) {
-        val isValid = emailPattern.matcher(newValue).matches() || newValue.isEmpty()
+        // Используем исправленную логику проверки
+        val isValid = isValidEmail(newValue) || newValue.isEmpty()
         uiState = uiState.copy(
-            email = newValue.lowercase(),
+            email = newValue, // убрал .lowercase() чтобы пользователь видел ввод как есть
             emailError = !isValid && newValue.isNotEmpty()
         )
+    }
+
+    // Новая функция для более корректной проверки email
+    private fun isValidEmail(email: String): Boolean {
+        if (email.isEmpty()) return false
+
+        // 1. Проверяем что email не начинается и не заканчивается точкой
+        if (email.startsWith(".") || email.endsWith(".")) return false
+
+        // 2. Проверяем что есть один символ @
+        val atCount = email.count { it == '@' }
+        if (atCount != 1) return false
+
+        // 3. Разделяем email на локальную часть и домен
+        val parts = email.split("@")
+        if (parts.size != 2) return false
+
+        val localPart = parts[0]
+        val domain = parts[1]
+
+        // 4. Проверяем локальную часть
+        if (localPart.isEmpty()) return false
+        if (localPart.startsWith(".") || localPart.endsWith(".")) return false
+        if (localPart.contains("..")) return false
+
+        // 5. Проверяем домен
+        if (domain.isEmpty()) return false
+        if (domain.startsWith(".") || domain.endsWith(".")) return false
+        if (domain.contains("..")) return false
+
+        // 6. Проверяем что в домене есть хотя бы одна точка
+        if (!domain.contains(".")) return false
+
+        // 7. Проверяем доменную зону (после последней точки)
+        val lastDotIndex = domain.lastIndexOf(".")
+        val domainZone = domain.substring(lastDotIndex + 1)
+        if (domainZone.length < 2) return false
+
+        // 8. Проверяем специальные символы с помощью regex (опционально)
+        return emailPattern.matches(email)
     }
 
     fun updatePassword(newValue: String) {
@@ -42,10 +83,10 @@ class RegisterAccountViewModel : ViewModel() {
 
     fun register(
         onNavigateToSignIn: () -> Unit = {},
-        onSignUpSuccess: () -> Unit = {}
+        onSignUpSuccess: (String) -> Unit = {} // Добавлен параметр для передачи email
     ) {
         if (uiState.emailError) {
-            uiState = uiState.copy(dialogMessage = "Некорректный Email. Проверьте формат: имя@домен.xx")
+            uiState = uiState.copy(dialogMessage = "Некорректный Email. Пример: name@domain.com")
             return
         }
 
@@ -63,8 +104,8 @@ class RegisterAccountViewModel : ViewModel() {
                 println("✅ Регистрация успешна!")
                 println("📧 OTP отправлен на email: ${uiState.email}")
 
-                // Вызываем коллбэк успешной регистрации
-                onSignUpSuccess()
+                // Вызываем коллбэк успешной регистрации с передачей email
+                onSignUpSuccess(uiState.email)
 
             } catch (e: Exception) {
                 uiState = uiState.copy(dialogMessage = "Ошибка регистрации: ${e.message ?: "Нет соединения с Интернетом"}")

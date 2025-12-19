@@ -61,7 +61,7 @@ fun HomeScreen(
             originalPrice = "P850.00",
             category = "BEST SELLER",
             imageUrl = "",
-            imageResId = R.drawable.eye_open
+            imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         Product(
             id = "2",
@@ -149,7 +149,7 @@ fun HomeScreen(
                             shape = CircleShape
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.eye_open),
+                                painter = painterResource(id = R.drawable.bag_2),
                                 contentDescription = "Cart",
                                 modifier = Modifier.size(24.dp)
                             )
@@ -465,7 +465,7 @@ private fun PromotionsSection() {
             shape = RoundedCornerShape(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.eye_open),
+                painter = painterResource(id = R.drawable.sale),
                 contentDescription = "Sale",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit

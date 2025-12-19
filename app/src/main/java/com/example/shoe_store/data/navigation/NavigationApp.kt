@@ -1,5 +1,6 @@
 package com.example.shoe_store.data.navigation
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import com.example.shoe_store.ui.screens.ProfileScreen
 fun NavigationApp() {
     val navController = rememberNavController()
 
+    text
     NavHost(
         navController = navController,
         startDestination = Screens.Onboard.route
@@ -32,7 +34,9 @@ fun NavigationApp() {
         composable(route = Screens.Onboard.route) {
             OnboardScreen(
                 onGetStartedClick = {
-                    navController.navigate(Screens.SignIn.route)
+                    navController.navigate(Screens.SignIn.route) {
+                        popUpTo(Screens.Onboard.route) { inclusive = true }
+                    }
                 }
             )
         }
@@ -106,18 +110,15 @@ fun NavigationApp() {
         composable(route = Screens.Home.route) {
             HomeScreen(
                 onProductClick = { product ->
-                    // Здесь будет переход на детали товара
-                    // navController.navigate("${Screens.ProductDetail.route}/${product.id}")
+                    // TODO: Переход на детали товара
                 },
                 onCartClick = {
-                    // Переход в корзину
-                    // navController.navigate(Screens.Cart.route)
+                    // TODO: Переход в корзину
                 },
                 onSearchClick = {
-                    // Логика поиска
+                    // TODO: Логика поиска
                 },
                 onSettingsClick = {
-                    // Переход в профиль
                     navController.navigate(Screens.Profile.route)
                 }
             )
@@ -126,25 +127,10 @@ fun NavigationApp() {
         // ========== ЭКРАН ПРОФИЛЯ ==========
         composable(route = Screens.Profile.route) {
             ProfileScreen()
-            // ИЛИ, если вы добавили параметры в ProfileScreen:
-            // ProfileScreen(
-            //     onBackClick = { navController.popBackStack() },
-            //     onEditProfileClick = {
-            //         // navController.navigate(Screens.EditProfile.route)
-            //     },
-            //     onLogoutClick = {
-            //         navController.navigate(Screens.SignIn.route) {
-            //             popUpTo(Screens.Home.route) {
-            //                 inclusive = true
-            //             }
-            //         }
-            //     }
-            // )
         }
     }
 }
 
-// ========== МАРШРУТЫ ==========
 sealed class Screens(val route: String) {
     object Onboard : Screens("onboard")
     object SignIn : Screens("sign_in")
