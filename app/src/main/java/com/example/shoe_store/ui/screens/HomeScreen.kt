@@ -149,7 +149,7 @@ fun HomeScreen(
                             shape = CircleShape
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.bag_2),
+                                painter = painterResource(id = R.drawable.eye_open),
                                 contentDescription = "Cart",
                                 modifier = Modifier.size(24.dp)
                             )
@@ -192,7 +192,7 @@ fun HomeScreen(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.home),
+                        text = stringResource(id = R.string.one),
                         style = AppTypography.headingRegular32,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -218,7 +218,7 @@ fun HomeScreen(
                                     .height(48.dp),
                                 placeholder = {
                                     Text(
-                                        text = stringResource(R.string.search),
+                                        text = stringResource(R.string.one),
                                         style = AppTypography.bodyRegular14
                                     )
                                 },
@@ -299,7 +299,7 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = stringResource(R.string.favourite),
+                                text = stringResource(R.string.one),
                                 style = AppTypography.headingRegular32
                             )
                         }
@@ -310,7 +310,7 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = stringResource(R.string.notifications),
+                                text = stringResource(R.string.one),
                                 style = AppTypography.headingRegular32
                             )
                         }
@@ -332,7 +332,7 @@ private fun CategorySection(
 ) {
     Column {
         Text(
-            text = stringResource(id = R.string.categories),
+            text = stringResource(id = R.string.one),
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -408,14 +408,14 @@ private fun PopularSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.popular),
+                text = stringResource(id = R.string.one),
                 style = AppTypography.bodyMedium16.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
                 )
             )
             Text(
-                text = stringResource(R.string.all),
+                text = stringResource(R.string.one),
                 style = AppTypography.bodyRegular12.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp
@@ -445,7 +445,7 @@ private fun PopularSection(
 private fun PromotionsSection() {
     Column {
         Text(
-            text = stringResource(R.string.sales),
+            text = stringResource(R.string.one),
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -465,7 +465,7 @@ private fun PromotionsSection() {
             shape = RoundedCornerShape(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.sale),
+                painter = painterResource(id = R.drawable.eye_open),
                 contentDescription = "Sale",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit

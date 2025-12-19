@@ -16,9 +16,9 @@ import com.example.shoe_store.ui.screens.ForgotPasswordScreen
 import com.example.shoe_store.ui.screens.OtpVerificationScreen
 import com.example.shoe_store.ui.screens.RegisterAccountScreen
 import com.example.shoe_store.ui.screens.SignInScreen
-import com.example.shoe_store.ui.screens.OnboardScreen  // Добавляем импорт
-import com.example.shoe_store.ui.screens.HomeScreen     // Добавляем импорт
-import com.example.shoe_store.ui.screens.ProfileScreen  // Добавляем импорт
+import com.example.shoe_store.ui.screens.OnboardScreen
+import com.example.shoe_store.ui.screens.HomeScreen
+import com.example.shoe_store.ui.screens.ProfileScreen
 
 @Composable
 fun NavigationApp() {
@@ -26,14 +26,12 @@ fun NavigationApp() {
 
     NavHost(
         navController = navController,
-        // ИЗМЕНЕНИЕ: стартовый экран теперь Onboard
         startDestination = Screens.Onboard.route
     ) {
         // ========== ЭКРАН ОНБОРДИНГА ==========
         composable(route = Screens.Onboard.route) {
             OnboardScreen(
                 onGetStartedClick = {
-                    // Перенаправляем на вход после онбординга
                     navController.navigate(Screens.SignIn.route)
                 }
             )
@@ -48,7 +46,6 @@ fun NavigationApp() {
                 onSignInClick = {
                     println("Вход выполнен успешно")
                     navController.navigate(Screens.Home.route) {
-                        // Очищаем весь стек до Home
                         popUpTo(Screens.Onboard.route) {
                             inclusive = true
                         }
@@ -67,7 +64,6 @@ fun NavigationApp() {
                     navController.popBackStack()
                 },
                 onSignUpClick = { email ->
-                    // Переходим на OTP верификацию с email
                     navController.navigate("${Screens.OtpVerification.route}/$email")
                 }
             )
@@ -89,7 +85,6 @@ fun NavigationApp() {
                 onNavigateToNewPassword = {
                     println("OTP верификация успешна")
                     navController.navigate(Screens.Home.route) {
-                        // Очищаем стек до Home
                         popUpTo(Screens.Onboard.route) {
                             inclusive = true
                         }
@@ -130,36 +125,32 @@ fun NavigationApp() {
 
         // ========== ЭКРАН ПРОФИЛЯ ==========
         composable(route = Screens.Profile.route) {
-            ProfileScreen(
-                // Добавьте коллбэки при необходимости, например:
-                onBackClick = { navController.popBackStack() },
-                onEditProfileClick = {
-                    // navController.navigate(Screens.EditProfile.route)
-                },
-                onLogoutClick = {
-                    // Выход и возврат на экран входа
-                    navController.navigate(Screens.SignIn.route) {
-                        popUpTo(Screens.Home.route) {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
+            ProfileScreen()
+            // ИЛИ, если вы добавили параметры в ProfileScreen:
+            // ProfileScreen(
+            //     onBackClick = { navController.popBackStack() },
+            //     onEditProfileClick = {
+            //         // navController.navigate(Screens.EditProfile.route)
+            //     },
+            //     onLogoutClick = {
+            //         navController.navigate(Screens.SignIn.route) {
+            //             popUpTo(Screens.Home.route) {
+            //                 inclusive = true
+            //             }
+            //         }
+            //     }
+            // )
         }
     }
 }
 
 // ========== МАРШРУТЫ ==========
 sealed class Screens(val route: String) {
-    object Onboard : Screens("onboard")           // Новый маршрут
+    object Onboard : Screens("onboard")
     object SignIn : Screens("sign_in")
     object RegisterAccount : Screens("register_account")
     object OtpVerification : Screens("otp_verification")
     object ForgotPassword : Screens("forgot_password")
     object Home : Screens("home")
-    object Profile : Screens("profile")           // Новый маршрут
-    // Можно добавить другие маршруты позже:
-    // object ProductDetail : Screens("product_detail/{id}")
-    // object Cart : Screens("cart")
-    // object EditProfile : Screens("edit_profile")
+    object Profile : Screens("profile")
 }
