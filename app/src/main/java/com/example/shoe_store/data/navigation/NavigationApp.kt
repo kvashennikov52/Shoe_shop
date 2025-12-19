@@ -20,6 +20,7 @@ import com.example.shoe_store.ui.screens.SignInScreen
 import com.example.shoe_store.ui.screens.OnboardScreen
 import com.example.shoe_store.ui.screens.HomeScreen
 import com.example.shoe_store.ui.screens.ProfileScreen
+import com.example.shoe_store.ui.screens.CategoryScreen
 
 @Composable
 fun NavigationApp() {
@@ -123,7 +124,21 @@ fun NavigationApp() {
                 }
             )
         }
+        composable("category/{categoryName}") { backStackEntry ->
+            val categoryName = backStackEntry.arguments?.getString("categoryName") ?: "Category"
 
+            CategoryScreen(
+                categoryName = categoryName,
+                onBackClick = { navController.popBackStack() },
+                onProductClick = { product ->
+                    // если экрана деталей пока нет, временно оставьте пустым
+                    // navController.navigate("details/${product.id}")
+                },
+                onFavoriteClick = { product ->
+                    // TODO: обработка добавления в избранное
+                }
+            )
+        }
         // ========== ЭКРАН ПРОФИЛЯ ==========
         composable(route = Screens.Profile.route) {
             ProfileScreen()
