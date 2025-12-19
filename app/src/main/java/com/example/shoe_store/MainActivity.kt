@@ -13,9 +13,12 @@ import com.example.shoe_store.data.navigation.NavigationApp
 import com.example.shoe_store.ui.screens.RegisterAccountScreen
 import com.example.shoe_store.ui.screens.SignInScreen
 import com.example.shoe_store.ui.theme.ShoeShopTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             ShoeShopTheme() {
