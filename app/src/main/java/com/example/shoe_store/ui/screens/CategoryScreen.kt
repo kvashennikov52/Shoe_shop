@@ -50,11 +50,7 @@ fun CategoryScreen(
         ),
         Product(
             id = "2",
-<<<<<<< HEAD
             name = "Nike Air Max 2",
-=======
-            name = "Nike Air Force 1",
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
             price = "P820.00",
             originalPrice = "P900.00",
             category = "BEST SELLER",
@@ -63,11 +59,7 @@ fun CategoryScreen(
         ),
         Product(
             id = "3",
-<<<<<<< HEAD
             name = "Nike Air Max 3",
-=======
-            name = "Adidas Ultraboost",
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
             price = "P680.00",
             originalPrice = "P750.00",
             category = "NEW",
@@ -76,11 +68,7 @@ fun CategoryScreen(
         ),
         Product(
             id = "4",
-<<<<<<< HEAD
             name = "Nike Air Max 4",
-=======
-            name = "Puma RS-X",
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
             price = "P520.00",
             originalPrice = "P600.00",
             category = "TRENDING",
@@ -89,11 +77,7 @@ fun CategoryScreen(
         ),
         Product(
             id = "5",
-<<<<<<< HEAD
             name = "Nike Air Max 5",
-=======
-            name = "Reebok Nano",
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
             price = "P620.00",
             originalPrice = "P700.00",
             category = "BEST SELLER",
@@ -102,11 +86,9 @@ fun CategoryScreen(
         ),
         Product(
             id = "6",
-<<<<<<< HEAD
+
             name = "Nike Air Max 6",
-=======
-            name = "New Balance 574",
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
+
             price = "P580.00",
             originalPrice = "P650.00",
             category = "NEW",
@@ -148,7 +130,6 @@ fun CategoryScreen(
             modifier = Modifier.height(60.dp)
         )
 
-<<<<<<< HEAD
         // Фильтр категорий (если нужно)
         if (categoryName != "All") {
             Row(
@@ -173,10 +154,6 @@ fun CategoryScreen(
             }
         }
 
-        // Сетка товаров
-=======
-        // Products grid
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
@@ -254,7 +231,6 @@ private fun CategoryProductCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-<<<<<<< HEAD
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -294,10 +270,8 @@ private fun CategoryProductCard(
             // Кнопка сердца (favorited)
             IconButton(
                 onClick = onFavoriteClick,
-=======
         Column {
             Box(
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
@@ -404,7 +378,6 @@ private fun CategoryProductCard(
                 }
             }
         }
-<<<<<<< HEAD
 
         // Информация о товаре
         Column(

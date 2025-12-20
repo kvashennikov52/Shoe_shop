@@ -124,7 +124,7 @@ fun NavigationApp() {
             CategoryScreen(
                 categoryName = categoryName,
                 onBackClick = { navController.popBackStack() },
-<<<<<<< HEAD
+
                 onProductClick = { /* TODO */ },
                 onFavoriteClick = { /* TODO */ },
                 onAllClick = {
@@ -133,16 +133,7 @@ fun NavigationApp() {
                 }
             )
         }
-=======
-                onProductClick = { product ->
-                    // Navigate to product details
-                    // navController.navigate("product_details/${product.id}")
-                },
-                onFavoriteClick = { product ->
-                    // Handle favorite click
-                }
-            )
-        }
+
 
         // Profile Screen
         composable(route = Screens.Profile.route) {
@@ -150,7 +141,7 @@ fun NavigationApp() {
                 onBackClick = { navController.popBackStack() }
             )
         }
->>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
+
     }
 }
 
