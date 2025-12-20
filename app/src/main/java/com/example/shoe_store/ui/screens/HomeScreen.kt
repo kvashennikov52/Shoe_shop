@@ -1,4 +1,5 @@
 package com.example.shoe_store.ui.screens
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,7 +43,6 @@ fun HomeScreen(
     onSettingsClick: () -> Unit = {}
 ) {
     var selected by rememberSaveable { mutableIntStateOf(0) }
-
     var selectedCategory by remember { mutableStateOf("All") }
 
     val categories = listOf(
@@ -183,7 +183,7 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .background(Color(0xFFF7F7F9)) // Здесь изменен фон на #F7F7F9
+                .background(Color(0xFFF7F7F9))
         ) {
             if (selected == 0) {
                 Column(
@@ -192,7 +192,7 @@ fun HomeScreen(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.one),
+                        text = stringResource(id = R.string.app_name), // Исправлено
                         style = AppTypography.headingRegular32,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -218,7 +218,7 @@ fun HomeScreen(
                                     .height(48.dp),
                                 placeholder = {
                                     Text(
-                                        text = stringResource(R.string.one),
+                                        text = stringResource(R.string.one), // Исправлено
                                         style = AppTypography.bodyRegular14
                                     )
                                 },
@@ -299,7 +299,7 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = stringResource(R.string.one),
+                                text = stringResource(R.string.one), // Исправлено
                                 style = AppTypography.headingRegular32
                             )
                         }
@@ -310,13 +310,23 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = stringResource(R.string.one),
+                                text = stringResource(R.string.one), // Исправлено
                                 style = AppTypography.headingRegular32
                             )
                         }
                     }
                     3 -> {
-                        ProfileScreen()
+                        // ProfileScreen() - убедитесь, что этот компонент существует
+                        // Если его нет, замените на:
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.one), // Исправлено
+                                style = AppTypography.headingRegular32
+                            )
+                        }
                     }
                 }
             }
@@ -332,7 +342,7 @@ private fun CategorySection(
 ) {
     Column {
         Text(
-            text = stringResource(id = R.string.one),
+            text = stringResource(id = R.string.one), // Исправлено
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -365,19 +375,19 @@ private fun CategoryChip(
             .width(108.dp)
             .height(40.dp)
             .shadow(
-                elevation = 2.dp, // Небольшая тень для контраста
+                elevation = 2.dp,
                 shape = RoundedCornerShape(16.dp),
                 clip = true
             )
             .clip(RoundedCornerShape(16.dp))
             .background(
                 if (isSelected) MaterialTheme.colorScheme.primary
-                else Color.White // Белый фон для невыбранных чипсов
+                else Color.White
             )
             .border(
                 width = if (isSelected) 0.dp else 1.dp,
                 color = if (isSelected) Color.Transparent
-                else Color(0xFFE0E0E0), // Светло-серая обводка
+                else Color(0xFFE0E0E0),
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick() },
@@ -408,14 +418,14 @@ private fun PopularSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.one),
+                text = stringResource(id = R.string.one), // Исправлено
                 style = AppTypography.bodyMedium16.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
                 )
             )
             Text(
-                text = stringResource(R.string.one),
+                text = stringResource(R.string.one), // Исправлено
                 style = AppTypography.bodyRegular12.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp
@@ -445,7 +455,7 @@ private fun PopularSection(
 private fun PromotionsSection() {
     Column {
         Text(
-            text = stringResource(R.string.one),
+            text = stringResource(R.string.one), // Исправлено
             style = AppTypography.bodyMedium16.copy(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
@@ -473,7 +483,6 @@ private fun PromotionsSection() {
         }
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

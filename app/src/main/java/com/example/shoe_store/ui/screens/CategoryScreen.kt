@@ -1,8 +1,8 @@
 package com.example.shoe_store.ui.screens
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,11 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.shoe_store.data.model.Product
-import com.example.shoe_store.ui.components.ProductCard
 import com.example.shoe_store.ui.theme.AppTypography
 import com.example.shoe_store.R
 
@@ -34,7 +33,8 @@ fun CategoryScreen(
     categoryName: String,
     onBackClick: () -> Unit,
     onProductClick: (Product) -> Unit,
-    onFavoriteClick: (Product) -> Unit
+    onFavoriteClick: (Product) -> Unit,
+    onAllClick: () -> Unit
 ) {
     var isFavoritedMap by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
 
@@ -51,46 +51,46 @@ fun CategoryScreen(
         ),
         Product(
             id = "2",
-            name = "Nike Air Max",
-            price = "P752.00",
-            originalPrice = "P850.00",
+            name = "Nike Air Max 2",
+            price = "P820.00",
+            originalPrice = "P900.00",
             category = "BEST SELLER",
             imageUrl = "",
             imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         Product(
             id = "3",
-            name = "Nike Air Max",
-            price = "P752.00",
-            originalPrice = "P850.00",
-            category = "BEST SELLER",
+            name = "Nike Air Max 3",
+            price = "P680.00",
+            originalPrice = "P750.00",
+            category = "NEW",
             imageUrl = "",
             imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         Product(
             id = "4",
-            name = "Nike Air Max",
-            price = "P752.00",
-            originalPrice = "P850.00",
-            category = "BEST SELLER",
+            name = "Nike Air Max 4",
+            price = "P520.00",
+            originalPrice = "P600.00",
+            category = "TRENDING",
             imageUrl = "",
             imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         Product(
             id = "5",
-            name = "Nike Air Max",
-            price = "P752.00",
-            originalPrice = "P850.00",
+            name = "Nike Air Max 5",
+            price = "P620.00",
+            originalPrice = "P700.00",
             category = "BEST SELLER",
             imageUrl = "",
             imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         Product(
             id = "6",
-            name = "Nike Air Max",
-            price = "P752.00",
-            originalPrice = "P850.00",
-            category = "BEST SELLER",
+            name = "Nike Air Max 6",
+            price = "P580.00",
+            originalPrice = "P650.00",
+            category = "NEW",
             imageUrl = "",
             imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         )
@@ -129,12 +129,36 @@ fun CategoryScreen(
             modifier = Modifier.height(60.dp)
         )
 
+        // Фильтр категорий (если нужно)
+        if (categoryName != "All") {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Кнопка "All" - кастомная реализация
+                CategoryFilterButton(
+                    text = "All",
+                    selected = false,
+                    onClick = onAllClick
+                )
+
+                // Кнопка текущей категории
+                CategoryFilterButton(
+                    text = categoryName,
+                    selected = true,
+                    onClick = { }
+                )
+            }
+        }
+
         // Сетка товаров
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = if (categoryName == "All") 8.dp else 0.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
@@ -153,6 +177,42 @@ fun CategoryScreen(
                 )
             }
         }
+    }
+}
+
+// Простая кастомная кнопка для фильтров
+@Composable
+fun CategoryFilterButton(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .height(36.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(
+                color = if (selected) MaterialTheme.colorScheme.primary else Color.White,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .border(
+                width = if (selected) 0.dp else 1.dp,
+                color = if (selected) Color.Transparent else Color(0xFFE0E0E0),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = AppTypography.bodyMedium16.copy(
+                fontSize = 14.sp,
+                fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal,
+                color = if (selected) Color.White else Color.Black
+            )
+        )
     }
 }
 
@@ -184,6 +244,27 @@ private fun CategoryProductCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
+
+            // Бейдж категории
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                        shape = RoundedCornerShape(6.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = product.category,
+                    style = AppTypography.bodyRegular12.copy(
+                        fontSize = 10.sp,
+                        color = Color.White
+                    )
+                )
+            }
 
             // Кнопка сердца (favorited)
             IconButton(
@@ -235,17 +316,10 @@ private fun CategoryProductCard(
                 .padding(12.dp)
         ) {
             Text(
-                text = product.category,
-                style = AppTypography.bodyRegular12,
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 10.sp
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
                 text = product.name,
-                style = AppTypography.bodyMedium16.copy(fontWeight = FontWeight.Medium),
+                style = AppTypography.bodyMedium16.copy(
+                    fontWeight = FontWeight.Medium
+                ),
                 fontSize = 14.sp,
                 color = Color.Black,
                 maxLines = 1
@@ -253,12 +327,64 @@ private fun CategoryProductCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = product.price,
-                style = AppTypography.bodyMedium16.copy(fontWeight = FontWeight.SemiBold),
-                fontSize = 14.sp,
-                color = Color.Black
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = product.price,
+                        style = AppTypography.bodyMedium16.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
+
+                    if (product.originalPrice.isNotEmpty() && product.originalPrice != product.price) {
+                        Text(
+                            text = product.originalPrice,
+                            style = AppTypography.bodyRegular12.copy(
+                                textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough
+                            ),
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                    }
+                }
+
+                // Рейтинг
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.eye_open),
+                        contentDescription = "Rating",
+                        tint = Color(0xFFFFC107),
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "4.5",
+                        style = AppTypography.bodyRegular12,
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                }
+            }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CategoryScreenPreview() {
+    CategoryScreen(
+        categoryName = "Running",
+        onBackClick = {},
+        onProductClick = {},
+        onFavoriteClick = {},
+        onAllClick = {}
+    )
 }

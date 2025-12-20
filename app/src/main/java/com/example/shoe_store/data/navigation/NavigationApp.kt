@@ -130,18 +130,13 @@ fun NavigationApp() {
             CategoryScreen(
                 categoryName = categoryName,
                 onBackClick = { navController.popBackStack() },
-                onProductClick = { product ->
-                    // если экрана деталей пока нет, временно оставьте пустым
-                    // navController.navigate("details/${product.id}")
-                },
-                onFavoriteClick = { product ->
-                    // TODO: обработка добавления в избранное
+                onProductClick = { /* TODO */ },
+                onFavoriteClick = { /* TODO */ },
+                onAllClick = {
+                    // возвращаемся на home при выборе All
+                    navController.popBackStack(route = "home", inclusive = false)
                 }
             )
-        }
-        // ========== ЭКРАН ПРОФИЛЯ ==========
-        composable(route = Screens.Profile.route) {
-            ProfileScreen()
         }
     }
 }
