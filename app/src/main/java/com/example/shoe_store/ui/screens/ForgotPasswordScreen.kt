@@ -58,7 +58,7 @@ fun ForgotPasswordScreen(
 
 
         Text(
-            text = "Забыл пароль",
+            text = "Forgot Password",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = getText()
@@ -68,7 +68,8 @@ fun ForgotPasswordScreen(
 
         // Подзаголовок
         Text(
-            text = "Введите Свою Учетную Запись\n Для Сброса",
+            text = "Enter Your Account\n To Reset"
+                    ,
             fontSize = 16.sp,
             color = getSubTextDark(),
             textAlign = TextAlign.Center,

@@ -61,7 +61,7 @@ fun CreateNewPasswordScreen(
 
         // Заголовок "Задать Новый Пароль"
         Text(
-            text = "Задать Новый Пароль",
+            text = "Set new password",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = com.example.shoe_store.ui.theme.Text,
@@ -71,7 +71,7 @@ fun CreateNewPasswordScreen(
 
         // Подзаголовок
         Text(
-            text = "Установите Новый Пароль Для Входа\nВ Вашу Учетную Запись",
+            text = "Set a New Password to Login \n to Your Account",
             fontSize = 16.sp,
             color = SubTextLight,
             modifier = Modifier
@@ -82,7 +82,7 @@ fun CreateNewPasswordScreen(
 
         // Поле "Пароль"
         Text(
-            text = "Пароль",
+            text = "Password",
             color = com.example.shoe_store.ui.theme.Text,
             fontSize = 16.sp,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -100,7 +100,7 @@ fun CreateNewPasswordScreen(
                 PasswordVisualTransformation(),
             placeholder = {
                 Text(
-                    text = "Введите пароль",
+                    text = "Enter the password",
                     color = SubtextDark,
                     fontSize = 16.sp
                 )
@@ -113,9 +113,9 @@ fun CreateNewPasswordScreen(
                         else
                             Icons.Filled.VisibilityOff,
                         contentDescription = if (passwordVisible)
-                            "Скрыть пароль"
+                            "Hide Password"
                         else
-                            "Показать пароль",
+                            "Show password",
                         tint = SubtextDark
                     )
                 }
@@ -134,7 +134,7 @@ fun CreateNewPasswordScreen(
 
         // Поле "Подтверждение пароля"
         Text(
-            text = "Подтверждение пароля",
+            text = "Confirm password",
             color = com.example.shoe_store.ui.theme.Text,
             fontSize = 16.sp,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -152,7 +152,7 @@ fun CreateNewPasswordScreen(
                 PasswordVisualTransformation(),
             placeholder = {
                 Text(
-                    text = "Подтвердите пароль",
+                    text = "Confirm password",
                     color = SubtextDark,
                     fontSize = 16.sp
                 )
@@ -165,9 +165,9 @@ fun CreateNewPasswordScreen(
                         else
                             Icons.Filled.VisibilityOff,
                         contentDescription = if (confirmPasswordVisible)
-                            "Скрыть пароль"
+                            "Hide Password"
                         else
-                            "Показать пароль",
+                            "Show password",
                         tint = SubtextDark
                     )
                 }
@@ -226,10 +226,10 @@ fun CreateNewPasswordScreen(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Сохранение...", color = Color.White)
+                Text("Save...", color = Color.White)
             } else {
                 Text(
-                    text = "Сохранить",
+                    text = "Save",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
