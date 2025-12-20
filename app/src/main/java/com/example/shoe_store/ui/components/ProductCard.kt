@@ -12,9 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.shoe_store.R
@@ -37,13 +39,15 @@ fun ProductCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Column {
-
-            // ===== КАРТИНКА =====
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Image section
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp)
+                    .background(Color(0xFFF5F5F5))
             ) {
                 if (product.imageResId != null) {
                     Image(
@@ -52,7 +56,7 @@ fun ProductCard(
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(24.dp)
+                            .padding(16.dp)
                     )
                 } else {
                     Box(
@@ -62,7 +66,7 @@ fun ProductCard(
                     )
                 }
 
-                // ===== СЕРДЕЧКО =====
+                // Favorite button
                 IconButton(
                     onClick = {
                         isFavorite = !isFavorite
@@ -71,81 +75,100 @@ fun ProductCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(8.dp)
+                        .size(32.dp)
+                        .background(
+                            color = Color.White.copy(alpha = 0.8f),
+                            shape = RoundedCornerShape(8.dp)
+                        )
                 ) {
                     Icon(
                         imageVector = if (isFavorite)
-                            Icons.Default.Favorite
+                            Icons.Filled.Favorite
                         else
-                            Icons.Default.FavoriteBorder,
-                        contentDescription = "Избранное",
-                        tint = if (isFavorite) Color.Red else Color.Black
+                            Icons.Filled.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color.Red else Color.Gray,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
 
-            // ===== НИЖНЯЯ ЧАСТЬ =====
+            // Product info section
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp)
             ) {
-
-                Column {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
                         text = product.category,
                         style = AppTypography.bodyRegular12,
                         color = MaterialTheme.colorScheme.primary
                     )
 
+                    Spacer(modifier = Modifier.height(4.dp))
+
                     Text(
                         text = product.name,
-                        style = AppTypography.bodyRegular16,
+                        style = AppTypography.bodyMedium16.copy(fontWeight = FontWeight.Medium),
                         maxLines = 1
                     )
 
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
-                        text = product.price,
-                        style = AppTypography.bodyRegular14
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = product.price,
+                            style = AppTypography.bodyMedium16.copy(fontWeight = FontWeight.SemiBold)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = product.originalPrice,
+                            style = AppTypography.bodyRegular12.copy(
+                                textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough
+                            ),
+                            color = Color.Gray
+                        )
+                    }
                 }
 
-                // ===== КНОПКА ЛИСТОЧЕК =====
+                // Add to cart button with leaf shape
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .offset(x = 6.dp, y = 6.dp)
                         .size(36.dp)
-                        .background(
-                            color = Color(0xFF4CB6E8),
-                            shape = LeafButtonShape()
-                        )
-                        .clickable { /* add to cart */ },
+                        .clip(createLeafShape())
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable { /* Add to cart */ },
                     contentAlignment = Alignment.Center
                 ) {
-
-                    if (isFavorite) {
-                        // КОРЗИНА
-                        Icon(
-                            painter = painterResource(id = R.drawable.eye_open),
-                            contentDescription = "В корзине",
-                            tint = Color.White,
-                            modifier = Modifier.size(12.dp)
-                        )
-                    } else {
-                        // ПЛЮС
-                        Icon(
-                            painter = painterResource(id = R.drawable.eye_open),
-                            contentDescription = "Добавить",
-                            tint = Color.White,
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.cart_na),
+                        contentDescription = "Add to cart",
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
                 }
             }
         }
     }
+}
+
+// Переименуйте функцию, чтобы избежать конфликта имен
+@Composable
+fun createLeafShape(): RoundedCornerShape {
+    return RoundedCornerShape(
+        topStart = 0.dp,
+        topEnd = 16.dp,
+        bottomStart = 16.dp,
+        bottomEnd = 0.dp
+    )
 }
 
 @Preview
@@ -155,11 +178,11 @@ fun ProductCardPreview() {
         product = Product(
             id = "1",
             name = "Nike Air Max",
-            price = "₽752.00",
-            originalPrice = "₽850.00",
+            price = "P752.00",
+            originalPrice = "P850.00",
             category = "BEST SELLER",
             imageUrl = "",
-            imageResId = null
+            imageResId = R.drawable.nike_zoom_winflo_3_831561_001_mens_running_shoes_11550187236tiyyje6l87_prev_ui_3
         ),
         onProductClick = {},
         onFavoriteClick = {}

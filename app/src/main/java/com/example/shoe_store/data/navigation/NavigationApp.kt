@@ -1,37 +1,22 @@
 package com.example.shoe_store.data.navigation
 
-import android.R.attr.text
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.shoe_store.ui.screens.ForgotPasswordScreen
-import com.example.shoe_store.ui.screens.OtpVerificationScreen
-import com.example.shoe_store.ui.screens.RegisterAccountScreen
-import com.example.shoe_store.ui.screens.SignInScreen
-import com.example.shoe_store.ui.screens.OnboardScreen
-import com.example.shoe_store.ui.screens.HomeScreen
-import com.example.shoe_store.ui.screens.ProfileScreen
-import com.example.shoe_store.ui.screens.CategoryScreen
+import com.example.shoe_store.ui.screens.*
 
 @Composable
 fun NavigationApp() {
     val navController = rememberNavController()
 
-    text
     NavHost(
         navController = navController,
         startDestination = Screens.Onboard.route
     ) {
-        // ========== ЭКРАН ОНБОРДИНГА ==========
+        // Onboard Screen
         composable(route = Screens.Onboard.route) {
             OnboardScreen(
                 onGetStartedClick = {
@@ -42,18 +27,15 @@ fun NavigationApp() {
             )
         }
 
-        // ========== ЭКРАН ВХОДА ==========
+        // Sign In Screen
         composable(route = Screens.SignIn.route) {
             SignInScreen(
                 onForgotPasswordClick = {
                     navController.navigate(Screens.ForgotPassword.route)
                 },
                 onSignInClick = {
-                    println("Вход выполнен успешно")
                     navController.navigate(Screens.Home.route) {
-                        popUpTo(Screens.Onboard.route) {
-                            inclusive = true
-                        }
+                        popUpTo(0) { inclusive = true }
                     }
                 },
                 onSignUpClick = {
@@ -62,7 +44,7 @@ fun NavigationApp() {
             )
         }
 
-        // ========== ЭКРАН РЕГИСТРАЦИИ ==========
+        // Register Account Screen
         composable(route = Screens.RegisterAccount.route) {
             RegisterAccountScreen(
                 onNavigateToSignIn = {
@@ -74,7 +56,7 @@ fun NavigationApp() {
             )
         }
 
-        // ========== ЭКРАН OTP ВЕРИФИКАЦИИ ==========
+        // OTP Verification Screen
         composable(
             route = "${Screens.OtpVerification.route}/{email}",
             arguments = listOf(
@@ -88,17 +70,14 @@ fun NavigationApp() {
             OtpVerificationScreen(
                 email = email,
                 onNavigateToNewPassword = {
-                    println("OTP верификация успешна")
                     navController.navigate(Screens.Home.route) {
-                        popUpTo(Screens.Onboard.route) {
-                            inclusive = true
-                        }
+                        popUpTo(0) { inclusive = true }
                     }
                 }
             )
         }
 
-        // ========== ЭКРАН ВОССТАНОВЛЕНИЯ ПАРОЛЯ ==========
+        // Forgot Password Screen
         composable(route = Screens.ForgotPassword.route) {
             ForgotPasswordScreen(
                 onNavigateBack = { navController.popBackStack() },
@@ -107,29 +86,45 @@ fun NavigationApp() {
             )
         }
 
-        // ========== ГЛАВНЫЙ ЭКРАН ==========
+        // Home Screen
         composable(route = Screens.Home.route) {
             HomeScreen(
                 onProductClick = { product ->
-                    // TODO: Переход на детали товара
+                    // Navigate to product details
+                    // navController.navigate("product_details/${product.id}")
                 },
                 onCartClick = {
-                    // TODO: Переход в корзину
+                    // Navigate to cart
+                    // navController.navigate(Screens.Cart.route)
                 },
                 onSearchClick = {
-                    // TODO: Логика поиска
+                    // Navigate to search
+                    // navController.navigate(Screens.Search.route)
                 },
                 onSettingsClick = {
                     navController.navigate(Screens.Profile.route)
+                },
+                onCategoryClick = { categoryName ->
+                    navController.navigate("category/${categoryName}")
                 }
             )
         }
-        composable("category/{categoryName}") { backStackEntry ->
+
+        // Category Screen
+        composable(
+            route = "category/{categoryName}",
+            arguments = listOf(
+                navArgument("categoryName") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
             val categoryName = backStackEntry.arguments?.getString("categoryName") ?: "Category"
 
             CategoryScreen(
                 categoryName = categoryName,
                 onBackClick = { navController.popBackStack() },
+<<<<<<< HEAD
                 onProductClick = { /* TODO */ },
                 onFavoriteClick = { /* TODO */ },
                 onAllClick = {
@@ -138,6 +133,24 @@ fun NavigationApp() {
                 }
             )
         }
+=======
+                onProductClick = { product ->
+                    // Navigate to product details
+                    // navController.navigate("product_details/${product.id}")
+                },
+                onFavoriteClick = { product ->
+                    // Handle favorite click
+                }
+            )
+        }
+
+        // Profile Screen
+        composable(route = Screens.Profile.route) {
+            ProfileScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+>>>>>>> bd2c49be81facd76bc3c6e4b0b07cce13f79b8bd
     }
 }
 

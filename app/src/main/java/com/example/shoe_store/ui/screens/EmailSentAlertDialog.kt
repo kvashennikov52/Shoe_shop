@@ -1,4 +1,4 @@
-package com.example.shoe_store.ui.screens // или com.example.shoestore.ui.components
+package com.example.shoe_store.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,7 +66,7 @@ fun EmailSentAlertDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = "Проверьте Ваш Email", // Хардкод вместо stringResource(R.string.ten2)
+                    text = "Check your email",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -77,7 +77,7 @@ fun EmailSentAlertDialog(
                 // Показываем email, если он передан
                 if (email.isNotBlank()) {
                     Text(
-                        text = "Мы отправили письмо на:",
+                        text = "We have sent an email to:",
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -97,7 +97,7 @@ fun EmailSentAlertDialog(
                 }
 
                 Text(
-                    text = "Мы отправили код восстановления пароля на вашу электронную почту.", // Хардкод вместо stringResource(R.string.ten3)
+                    text = "We have send password recovery code in your email.",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,

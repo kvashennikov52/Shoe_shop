@@ -39,7 +39,7 @@ class OtpVerificationViewModel : ViewModel() {
     private val _otpState = MutableStateFlow<OtpState>(OtpState.Idle)
     val otpState: StateFlow<OtpState> = _otpState.asStateFlow()
 
-    // Запуск таймера (01:00)
+    // Запуск таймера
     fun startTimer() {
         if (_isTimerRunning.value) return
 
@@ -90,7 +90,7 @@ class OtpVerificationViewModel : ViewModel() {
         }
     }
 
-    // Верификация OTP (симуляция)
+    // Верификация OTP
     fun verifyOtp() {
         if (otpCode.length != 6) {
             otpError = "Введите 6-значный код"
@@ -126,7 +126,7 @@ class OtpVerificationViewModel : ViewModel() {
         }
     }
 
-    // Повторная отправка OTP (симуляция)
+    // Повторная отправка OTP
     fun resendOtp() {
         if (!_isTimerRunning.value && _timerSeconds.value == 0) {
             resetTimer()

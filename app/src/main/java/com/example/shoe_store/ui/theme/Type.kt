@@ -112,7 +112,7 @@ val Typography = Typography(
     )
 )
 
-// Дополнительные кастомные стили для более точного соответствия
+// Дополнительные кастомные стили
 object AppTypography {
     // Heading стили
     val headingRegular34 = TextStyle(

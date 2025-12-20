@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface ApiService {
-    // GET запрос - фильтр user_id передается как параметр
+    // GET запрос
     @GET("rest/v1/profiles")
     suspend fun getUserProfile(
         @Header("apikey") apiKey: String,
@@ -15,7 +15,7 @@ interface ApiService {
         @Query("user_id") userIdFilter: String
     ): Response<List<UserProfile>>
 
-    // PATCH запрос - фильтр user_id в query параметрах
+    // PATCH запрос
     @PATCH("rest/v1/profiles")
     suspend fun updateProfile(
         @Header("apikey") apiKey: String,

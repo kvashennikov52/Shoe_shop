@@ -50,7 +50,7 @@ fun SignInScreen(
 
         // ===== Заголовок =====
         Text(
-            text = "Привет!",
+            text = "Helloy!",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = getText()
@@ -59,7 +59,7 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Заполните Свои Данные",
+            text = "Fill your details",
             fontSize = 16.sp,
             color = getSubTextDark()
         )
@@ -100,7 +100,7 @@ fun SignInScreen(
 
         // ===== Пароль =====
         Text(
-            text = "Пароль",
+            text = "Password",
             fontSize = 16.sp,
             color = getText(),
             modifier = Modifier
@@ -146,14 +146,14 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // ===== Восстановить (сделаем кликабельным) =====
+        // ===== Восстановить =====
         TextButton(
             onClick = onForgotPasswordClick,
             modifier = Modifier.align(Alignment.End),
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
-                text = "Восстановить",
+                text = "Recovery Password",
                 fontSize = 14.sp,
                 color = getSubTextDark()
             )
@@ -174,7 +174,7 @@ fun SignInScreen(
             enabled = email.isNotBlank() && password.isNotBlank()
         ) {
             Text(
-                text = "Войти",
+                text = "Sign In",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -183,14 +183,14 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(209.dp))
 
-        // ===== Нижний текст (сделаем кликабельным) =====
+        // ===== Нижний текст  =====
         TextButton(
             onClick = onSignUpClick,
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
-                text = "Вы впервые? Создать",
+                text = "New User? Create Account",
                 fontSize = 16.sp,
                 color = getSubTextDark(),
                 textAlign = TextAlign.Center
